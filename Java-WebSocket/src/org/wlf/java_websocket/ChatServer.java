@@ -22,7 +22,7 @@ import com.sun.xml.internal.ws.transport.http.WSHTTPConnection;
 
 public class ChatServer extends WebSocketServer {
 
-	private static ConcurrentHashMap<String, ChatServer> webSocketSet = new ConcurrentHashMap<String, ChatServer>();
+	private static ConcurrentHashMap<String, WebSocket> ClientSet = new ConcurrentHashMap<String, WebSocket>();
 	private String ConnectString =null;
 	
 	public ChatServer(int port) throws UnknownHostException {
@@ -43,8 +43,11 @@ public class ChatServer extends WebSocketServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		sendToAll(conn.getRemoteSocketAddress()
-				+ConnectString+" 进入房间 ！");
+		
+		ClientSet.put(ConnectString, conn);
+		sendToAll(conn.getRemoteSocketAddress().getAddress()
+				.getHostAddress()+ConnectString
+				+ " 进入房间 ！");
 
 		System.out.println(conn.getRemoteSocketAddress().getAddress()
 				.getHostAddress()+ConnectString
@@ -64,18 +67,36 @@ public class ChatServer extends WebSocketServer {
 
 	@Override
 	public void onMessage(WebSocket conn, String message) {
-		String[] strs =message.split("//");
+		if (message.contains("|")) {
+			String[] strs =message.split("\\|");
+			if(strs.length==3) {
+				sendTo(strs[1],"["
+						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+						+ "]" + strs[0]+"向"+strs[1]+"说"+strs[2]);
 		
-		if(strs.length==2) {
+					System.out.println("["
+							+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+							+ "]" + strs[0]+"向"+strs[1]+"说"+strs[2]);
+			}else if(strs.length==2) {
+				sendToAll("["
+						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+						+ "]" +strs[0]+"向所有人说"+strs[1]);
+		
+				System.out.println("["
+						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+						+ "]" +strs[0]+"向所有人说"+strs[1]);
+			} 
+		}
+		else {
 			sendToAll("["
-				+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-				+ "]" + strs[0]+"向所有人说"+strs[1]);
-
-		System.out.println("["
-				+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-				+ "]" + message);
-		}else if (strs.length==3) {
-		} 
+					+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+					+ "]" +"向所有人说"+message);
+	
+			System.out.println("["
+					+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
+					+ "]" +"向所有人说"+message);
+		}
+		
 		
 	}
 
@@ -98,10 +119,13 @@ public class ChatServer extends WebSocketServer {
 	}
 	
 	// 发送给指定的聊天者
-		private void sendTo(String name,String text) {
+		private void sendTo(String condition,String text) {
 			Collection<WebSocket> conns = connections();
 			synchronized (conns) {
 				for (WebSocket client : conns) {
+					if (client==ClientSet.get(condition)) {
+						client.send(text);
+					}
 				}
 			}
 		}

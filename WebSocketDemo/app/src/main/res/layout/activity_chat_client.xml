@@ -55,6 +55,11 @@
                 android:text="连接"/>
 
             <Button
+                android:id="@+id/btnClear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="清空"/>
+            <Button
                 android:id="@+id/btnClose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,6 +113,7 @@
             android:id="@+id/sendMessage"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:text=""
             android:layout_weight="1"/>
 
         <Button

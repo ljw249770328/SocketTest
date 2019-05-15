@@ -44,6 +44,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
     private EditText sendmessage;
     private EditText sendName;
     private Button btnsendto;
+    private Button btnclear;
 
     private WebSocketClient client;// 连接客户端
     private DraftInfo selectDraft;// 连接协议
@@ -52,7 +53,6 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_client);
-
         svChat = (ScrollView) findViewById(R.id.svChat);
         spDraft = (Spinner) findViewById(R.id.spDraft);
         etAddress = (EditText) findViewById(R.id.etAddress);
@@ -63,6 +63,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
         sendmessage= (EditText) findViewById(R.id.sendMessage);
         sendName= (EditText) findViewById(R.id.send_name);
         btnsendto= (Button) findViewById(R.id.btnSendTo);
+        btnclear= (Button) findViewById(R.id.btnClear);
 
 
         etName = (EditText) findViewById(R.id.etName);
@@ -128,6 +129,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
         btnClose.setOnClickListener(this);
         btnSend.setOnClickListener(this);
         btnsendto.setOnClickListener(this);
+        btnclear.setOnClickListener(this);
 
         WebSocketImpl.DEBUG = true;
         System.setProperty("java.net.preferIPv6Addresses", "false");
@@ -163,7 +165,6 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
                                     etAddress.setEnabled(false);
                                     btnConnect.setEnabled(false);
                                     etName.setEnabled(false);
-
                                     btnClose.setEnabled(true);
                                     btnSend.setEnabled(true);
                                 }
@@ -236,7 +237,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
             case R.id.btnSend:
                 try {
                     if (client != null) {
-                        client.send(etName.getText().toString().trim() + "//" + etMessage.getText().toString().trim());
+                        client.send(etName.getText().toString().trim() + "|" + etMessage.getText().toString().trim());
                         svChat.post(new Runnable() {
                             @Override
                             public void run() {
@@ -253,7 +254,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
             case R.id.btnSendTo:
                 try {
                     if (client != null) {
-                        client.send(etName.getText().toString().trim() +"//"+sendName.getText()+ "//" + etMessage.getText().toString().trim());
+                        client.send(etName.getText().toString() +"|"+sendName.getText().toString()+ "|" + sendmessage.getText().toString());
                         svChat.post(new Runnable() {
                             @Override
                             public void run() {
@@ -266,6 +267,8 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            case R.id.btnClear:
+                etDetails.setText("");
         }
     }
 
