@@ -60,10 +60,10 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
         btnConnect = (Button) findViewById(R.id.btnConnect);
         btnClose = (Button) findViewById(R.id.btnClose);
         etDetails = (EditText) findViewById(R.id.etDetails);
-        sendmessage= (EditText) findViewById(R.id.sendMessage);
-        sendName= (EditText) findViewById(R.id.send_name);
-        btnsendto= (Button) findViewById(R.id.btnSendTo);
-        btnclear= (Button) findViewById(R.id.btnClear);
+        sendmessage = (EditText) findViewById(R.id.sendMessage);
+        sendName = (EditText) findViewById(R.id.send_name);
+        btnsendto = (Button) findViewById(R.id.btnSendTo);
+        btnclear = (Button) findViewById(R.id.btnClear);
 
 
         etName = (EditText) findViewById(R.id.etName);
@@ -71,7 +71,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
         btnSend = (Button) findViewById(R.id.btnSend);
 
         DraftInfo[] draftInfos = {new DraftInfo("WebSocket协议Draft_17", new Draft_17()), new DraftInfo
-                ("WebSocket协议Draft_10", new Draft_10()), new DraftInfo("WebSocket协议Draft_76", new Draft_76()), new 
+                ("WebSocket协议Draft_10", new Draft_10()), new DraftInfo("WebSocket协议Draft_76", new Draft_76()), new
                 DraftInfo("WebSocket协议Draft_75", new Draft_75())};// 所有连接协议
         selectDraft = draftInfos[0];// 默认选择第一个连接协议
 
@@ -149,9 +149,9 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
                         address += etName.getText().toString().trim();
                     }
                     Log.e("wlf", "连接地址：" + address);
-                    Map<String ,String> header =new HashMap<>();
-                    header.put("id",URLEncoder.encode(etName.getText().toString().trim(),"UTF-8"));
-                    client = new WebSocketClient(new URI(address), selectDraft.draft,header,5000) {
+                    Map<String, String> header = new HashMap<>();
+                    header.put("id", URLEncoder.encode(etName.getText().toString().trim(), "UTF-8"));
+                    client = new WebSocketClient(new URI(address), selectDraft.draft, header, 5000) {
                         @Override
                         public void onOpen(final ServerHandshake serverHandshakeData) {
                             runOnUiThread(new Runnable() {
@@ -254,7 +254,7 @@ public class ChatClientActivity extends AppCompatActivity implements OnClickList
             case R.id.btnSendTo:
                 try {
                     if (client != null) {
-                        client.send(etName.getText().toString() +"|"+sendName.getText().toString()+ "|" + sendmessage.getText().toString());
+                        client.send(etName.getText().toString() + "|" + sendName.getText().toString() + "|" + sendmessage.getText().toString());
                         svChat.post(new Runnable() {
                             @Override
                             public void run() {
