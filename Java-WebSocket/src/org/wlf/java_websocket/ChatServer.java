@@ -47,22 +47,22 @@ public class ChatServer extends WebSocketServer {
 		ClientSet.put(ConnectString, conn);
 		sendToAll(conn.getRemoteSocketAddress().getAddress()
 				.getHostAddress()+ConnectString
-				+ " ½øÈë·¿¼ä £¡");
+				+ " è¿›å…¥æˆ¿é—´ ï¼");
 
 		System.out.println(conn.getRemoteSocketAddress().getAddress()
 				.getHostAddress()+ConnectString
-				+ " ½øÈë·¿¼ä £¡");
+				+ " è¿›å…¥æˆ¿é—´ ï¼");
 	}
 
 	@Override
 	public void onClose(WebSocket conn, int code, String reason, boolean remote) {
 
 		sendToAll(conn.getRemoteSocketAddress().getAddress().getHostAddress()
-				+ " Àë¿ª·¿¼ä £¡");
+				+ " ç¦»å¼€æˆ¿é—´ ï¼");
 
 		System.out.println(conn.getRemoteSocketAddress().getAddress()
 				.getHostAddress()
-				+ " Àë¿ª·¿¼ä £¡");
+				+ " ç¦»å¼€æˆ¿é—´ ï¼");
 	}
 
 	@Override
@@ -72,29 +72,29 @@ public class ChatServer extends WebSocketServer {
 			if(strs.length==3) {
 				sendTo(strs[1],"["
 						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-						+ "]" + strs[0]+"Ïò"+strs[1]+"Ëµ"+strs[2]);
+						+ "]" + strs[0]+"å‘"+strs[1]+"è¯´"+strs[2]);
 		
 					System.out.println("["
 							+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-							+ "]" + strs[0]+"Ïò"+strs[1]+"Ëµ"+strs[2]);
+							+ "]" + strs[0]+"å‘"+strs[1]+"è¯´"+strs[2]);
 			}else if(strs.length==2) {
 				sendToAll("["
 						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-						+ "]" +strs[0]+"ÏòËùÓĞÈËËµ"+strs[1]);
+						+ "]" +strs[0]+"å‘æ‰€æœ‰äººè¯´"+strs[1]);
 		
 				System.out.println("["
 						+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-						+ "]" +strs[0]+"ÏòËùÓĞÈËËµ"+strs[1]);
+						+ "]" +strs[0]+"å‘æ‰€æœ‰äººè¯´"+strs[1]);
 			} 
 		}
 		else {
 			sendToAll("["
 					+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-					+ "]" +"ÏòËùÓĞÈËËµ"+message);
+					+ "]" +"å‘æ‰€æœ‰äººè¯´"+message);
 	
 			System.out.println("["
 					+ conn.getRemoteSocketAddress().getAddress().getHostAddress()
-					+ "]" +"ÏòËùÓĞÈËËµ"+message);
+					+ "]" +"å‘æ‰€æœ‰äººè¯´"+message);
 		}
 		
 		
@@ -108,7 +108,7 @@ public class ChatServer extends WebSocketServer {
 		}
 	}
 
-	// ·¢ËÍ¸øËùÓĞµÄÁÄÌìÕß
+	// å‘é€ç»™æ‰€æœ‰çš„èŠå¤©è€…
 	private void sendToAll(String text) {
 		Collection<WebSocket> conns = connections();
 		synchronized (conns) {
@@ -118,7 +118,7 @@ public class ChatServer extends WebSocketServer {
 		}
 	}
 	
-	// ·¢ËÍ¸øÖ¸¶¨µÄÁÄÌìÕß
+	// å‘é€ç»™æŒ‡å®šçš„èŠå¤©è€…
 		private void sendTo(String condition,String text) {
 			Collection<WebSocket> conns = connections();
 			synchronized (conns) {
@@ -130,7 +130,7 @@ public class ChatServer extends WebSocketServer {
 			}
 		}
 
-	// ²âÊÔ
+	// æµ‹è¯•
 	public static void main(String[] args) throws InterruptedException,
 			IOException {
 
@@ -139,7 +139,7 @@ public class ChatServer extends WebSocketServer {
 		ChatServer server = new ChatServer(port);
 		server.start();
 
-		System.out.println("·¿¼äÒÑ¿ªÆô£¬µÈ´ı¿Í»§¶Ë½ÓÈë£¬¶Ë¿ÚºÅ: " + server.getPort());
+		System.out.println("æˆ¿é—´å·²å¼€å¯ï¼Œç­‰å¾…å®¢æˆ·ç«¯æ¥å…¥ï¼Œç«¯å£å·: " + server.getPort());
 
 		BufferedReader webSocketIn = new BufferedReader(new InputStreamReader(
 				System.in));
